@@ -45,7 +45,7 @@ omit = [
 plugins = ["pydantic.mypy"]
 
 [tool.pytest.ini_options]
-asyncio_mode = "auto"
+# No asyncio-specific configuration
 
 [tool.ruff]
 exclude = [".venv", "./tvdata/_version.py"]
