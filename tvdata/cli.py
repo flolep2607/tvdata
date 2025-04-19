@@ -4,7 +4,7 @@ from functools import wraps
 import click
 
 from .settings import settings
-from . import fetch_candles, fetch_timeframes, fetch_tickers
+from .core.client import Client
 
 
 @click.group()
@@ -43,7 +43,8 @@ def version():
 @click.option("--csv", default=None, help="Path to export CSV file (optional)")
 def candles(api_url, symbol, timeframe, start, end, chunk_size, csv):
     """Fetch candles and optionally export as CSV."""
-    df = fetch_candles(symbol, timeframe, start, end, chunk_size, api_url)
+    client = Client(api_url=api_url)
+    df = client.fetch_candles(symbol, timeframe, start, end, chunk_size)
     if csv:
         df.to_csv(csv, index=False)
         click.echo(f"Exported candles to {csv}")
@@ -57,7 +58,8 @@ def candles(api_url, symbol, timeframe, start, end, chunk_size, csv):
 )
 def timeframes(api_url):
     """List available timeframes from the API."""
-    tfs = fetch_timeframes(api_url)
+    client = Client(api_url=api_url)
+    tfs = client.fetch_timeframes()
     click.echo(tfs)
 
 
@@ -67,7 +69,8 @@ def timeframes(api_url):
 )
 def tickers(api_url):
     """List available tickers from the API."""
-    tks = fetch_tickers(api_url)
+    client = Client(api_url=api_url)
+    tks = client.fetch_tickers()
     click.echo(tks)
 
 

@@ -29,6 +29,9 @@ PYTHON_DEPS := $(PACKAGE_CHECK)
 .PHONY: all
 all: $(PACKAGE_CHECK)
 
+.PHONY: default
+default: chores tests 
+
 .PHONY: install
 install: $(PYTHON_PYENV) $(PYTHON_VENV) pip
 

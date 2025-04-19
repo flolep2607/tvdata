@@ -22,25 +22,26 @@ pip install TvData
 ### Library
 
 ```python
-from tvdata import fetch_candles, fetch_timeframes, fetch_tickers
+from tvdata import Client
 
-df = fetch_candles(
-    symbol="AAPL",
-    timeframe="1m",
-    start=1700000000,
-    end=1700003600,
-    chunk_size=100,
-    api_url="http://candles.macrofinder.flolep.fr"
-)
-print(df)
+client = Client()
 
 # Get available timeframes
-timeframes = fetch_timeframes("http://candles.macrofinder.flolep.fr")
+timeframes = client.fetch_timeframes()
 print(timeframes)
 
 # Get available tickers
-tickers = fetch_tickers("http://candles.macrofinder.flolep.fr")
+tickers = client.fetch_tickers()
 print(tickers)
+
+df = client.fetch_candles(
+    symbol=tickers[0],
+    timeframe=timeframes[0],
+    start=1700000000,
+    end=1700003600,
+    chunk_size=100,
+)
+print(df)
 ```
 
 See more in `examples/example_tvdata.py`.
@@ -50,7 +51,7 @@ See more in `examples/example_tvdata.py`.
 ```bash
 tvdata candles SYMBOL TIMEFRAME START END --csv output.csv
 # Example:
-tvdata candles AAPL 1m 1700000000 1700003600 --csv aapl_1m.csv
+tvdata candles "BINANCE:BTCUSDT" 1 1700000000 1700003600 --csv aapl_1m.csv
 
 tvdata timeframes
 
@@ -92,23 +93,26 @@ pip install TvData
 ### Librairie
 
 ```python
-from tvdata import fetch_candles, fetch_timeframes, fetch_tickers
+from tvdata import Client
 
-candles = fetch_candles(
-    symbol="AAPL",
-    timeframe="1m",
+client = Client()
+
+# Récupérer les timeframes disponibles
+timeframes = client.fetch_timeframes()
+print(timeframes)
+
+# Récupérer les tickers disponibles
+tickers = client.fetch_tickers()
+print(tickers)
+
+candles = client.fetch_candles(
+    symbol=tickers[0],
+    timeframe=timeframes[0],
     start=1700000000,
     end=1700003600,
     chunk_size=100,
-    api_url="http://candles.macrofinder.flolep.fr"
 )
 print(candles)
-
-timeframes = fetch_timeframes("http://candles.macrofinder.flolep.fr")
-print(timeframes)
-
-tickers = fetch_tickers("http://candles.macrofinder.flolep.fr")
-print(tickers)
 ```
 
 Voir plus dans `examples/example_tvdata.py`.
