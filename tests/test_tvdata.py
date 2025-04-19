@@ -1,4 +1,3 @@
-import pytest
 import pandas as pd
 from unittest.mock import patch
 from tvdata import fetch_candles, fetch_timeframes, fetch_tickers
@@ -11,6 +10,7 @@ MOCK_CANDLES = [
 MOCK_TIMEFRAMES = ["1m", "5m", "1h"]
 MOCK_TICKERS = ["AAPL", "GOOG"]
 
+
 @patch("tvdata.requests.get")
 def test_fetch_candles(mock_get):
     mock_get.return_value.json.side_effect = [MOCK_CANDLES, []]
@@ -20,12 +20,14 @@ def test_fetch_candles(mock_get):
     assert len(df) == 2
     assert set(df.columns) == set(MOCK_CANDLES[0].keys())
 
+
 @patch("tvdata.requests.get")
 def test_fetch_timeframes(mock_get):
     mock_get.return_value.json.return_value = MOCK_TIMEFRAMES
     mock_get.return_value.raise_for_status = lambda: None
     tfs = fetch_timeframes("http://mock.api")
     assert tfs == MOCK_TIMEFRAMES
+
 
 @patch("tvdata.requests.get")
 def test_fetch_tickers(mock_get):

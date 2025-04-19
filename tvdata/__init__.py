@@ -7,7 +7,7 @@ except:  # noqa: E722
 
 import pandas as pd
 import requests
-from typing import Iterator, List, Dict, Any, Optional
+from typing import Iterator, List, Dict, Any
 
 DEFAULT_API_URL: str = "http://candles.macrofinder.flolep.fr"
 

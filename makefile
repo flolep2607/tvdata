@@ -4,7 +4,7 @@ ifdef CI
 	PYTHON_PYENV :=
 	PYTHON_VERSION := $(shell python --version|cut -d" " -f2)
 else
-	PYTHON_PYENV := pyenv
+	# PYTHON_PYENV := pyenv
 	PYTHON_VERSION := $(shell cat .python-version)
 endif
 PYTHON_SHORT_VERSION := $(shell echo $(PYTHON_VERSION) | grep -o '[0-9].[0-9]*')
@@ -76,10 +76,10 @@ tomlsort_fixes:
 # Testing
 #
 .PHONY: tests
-tests: install pytest ruff_check black_check mypy_check dapperdata_check tomlsort_check
+tests: install pytest_check ruff_check black_check mypy_check dapperdata_check tomlsort_check
 
-.PHONY: pytest
-pytest:
+.PHONY: pytest_check
+pytest_check:
 	$(PYTHON) -m pytest --cov=./${PACKAGE_SLUG} --cov-report=term-missing tests
 
 .PHONY: pytest_loud

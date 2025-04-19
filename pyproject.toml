@@ -12,7 +12,9 @@ readme = {file = "README.md", content-type = "text/markdown"}
 dependencies = [
   "pydantic~=2.0",
   "pydantic-settings",
-  "typer"
+  "typer",
+  "requests",
+  "pandas==2.2.3"
 ]
 
 [project.optional-dependencies]
@@ -28,7 +30,9 @@ dev = [
   "ruamel.yaml",
   "ruff",
   "toml-sort",
-  "uv"
+  "uv",
+  "types-requests",
+  "pandas-stubs"
 ]
 
 [project.scripts]
@@ -45,7 +49,6 @@ omit = [
 plugins = ["pydantic.mypy"]
 
 [tool.pytest.ini_options]
-# No asyncio-specific configuration
 
 [tool.ruff]
 exclude = [".venv", "./tvdata/_version.py"]

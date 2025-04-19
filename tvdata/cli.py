@@ -2,7 +2,6 @@ import asyncio
 from functools import wraps
 
 import typer
-import pandas as pd
 
 from .settings import settings
 from . import fetch_candles, fetch_timeframes, fetch_tickers
@@ -31,9 +30,7 @@ def version() -> None:
 
 @app.command()
 def candles(
-    api_url: str = typer.Option(
-        "http://candles.macrofinder.flolep.fr", help="Base URL of the API"
-    ),
+    api_url: str = typer.Option("http://candles.macrofinder.flolep.fr", help="Base URL of the API"),
     symbol: str = typer.Argument(..., help="Symbol to fetch candles for"),
     timeframe: str = typer.Argument(..., help="Timeframe to fetch"),
     start: int = typer.Argument(..., help="Start timestamp (inclusive)"),
@@ -51,22 +48,14 @@ def candles(
 
 
 @app.command()
-def timeframes(
-    api_url: str = typer.Option(
-        "http://candles.macrofinder.flolep.fr", help="Base URL of the API"
-    )
-) -> None:
+def timeframes(api_url: str = typer.Option("http://candles.macrofinder.flolep.fr", help="Base URL of the API")) -> None:
     """List available timeframes from the API."""
     tfs = fetch_timeframes(api_url)
     typer.echo(tfs)
 
 
 @app.command()
-def tickers(
-    api_url: str = typer.Option(
-        "http://candles.macrofinder.flolep.fr", help="Base URL of the API"
-    )
-) -> None:
+def tickers(api_url: str = typer.Option("http://candles.macrofinder.flolep.fr", help="Base URL of the API")) -> None:
     """List available tickers from the API."""
     tks = fetch_tickers(api_url)
     typer.echo(tks)
