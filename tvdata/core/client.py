@@ -2,7 +2,7 @@ from typing import Iterator, List, Dict, Any
 import pandas as pd
 import requests
 
-DEFAULT_API_URL: str = "http://candles.macrofinder.flolep.fr"
+DEFAULT_API_URL: str = "https://candles.macrofinder.flolep.fr"
 
 
 class Client:
@@ -22,6 +22,8 @@ class Client:
         """
         all_candles: List[Dict[str, Any]] = []
         page: int = 1
+        headers: List[str] = []
+        first = True
         while True:
             params: Dict[str, Any] = {
                 "ticker": symbol,
@@ -34,6 +36,10 @@ class Client:
             response = requests.get(f"{self.api_url}/candles", params=params)
             response.raise_for_status()
             data: Any = response.json()
+            if first:
+                if isinstance(data, dict) and "headers" in data:
+                    headers = data["headers"]
+                first = False
             candles: Any = data.get("candles") if isinstance(data, dict) else data
             if candles is None:
                 candles = data.get("data") if isinstance(data, dict) else data
@@ -45,6 +51,8 @@ class Client:
             if len(candles) < chunk_size:
                 break
             page += 1
+        if headers:
+            return pd.DataFrame(all_candles, columns=headers)
         return pd.DataFrame(all_candles)
 
     def stream_candles(

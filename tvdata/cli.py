@@ -2,9 +2,14 @@ import asyncio
 from functools import wraps
 
 import click
+from rich.console import Console
+from rich.table import Table
+from rich import box
 
 from .settings import settings
-from .core.client import Client
+from .core.client import Client, DEFAULT_API_URL
+
+console = Console()
 
 
 @click.group()
@@ -28,13 +33,11 @@ def syncify(f):
 def version():
     from . import _version
 
-    click.echo(f"{settings.project_name} - {_version.version}")
+    console.print(f"[bold green]{settings.project_name}[/bold green] - [yellow]{_version.version}[/yellow]")
 
 
 @main.command()
-@click.option(
-    "--api-url", default="http://candles.macrofinder.flolep.fr", show_default=True, help="Base URL of the API"
-)
+@click.option("--api-url", default=DEFAULT_API_URL, show_default=True, help="Base URL of the API")
 @click.argument("symbol")
 @click.argument("timeframe")
 @click.argument("start", type=int)
@@ -47,31 +50,49 @@ def candles(api_url, symbol, timeframe, start, end, chunk_size, csv):
     df = client.fetch_candles(symbol, timeframe, start, end, chunk_size)
     if csv:
         df.to_csv(csv, index=False)
-        click.echo(f"Exported candles to {csv}")
+        console.print(f"[green]Exported candles to {csv}[/green]")
     else:
-        click.echo(df)
+        if df.empty:
+            console.print("[yellow]No candles found.[/yellow]")
+        else:
+            table = Table(show_header=True, header_style="bold magenta", box=box.SIMPLE)
+            for col in df.columns:
+                table.add_column(str(col))
+            for row in df.itertuples(index=False):
+                table.add_row(*[str(x) for x in row])
+            console.print(table)
 
 
 @main.command()
-@click.option(
-    "--api-url", default="http://candles.macrofinder.flolep.fr", show_default=True, help="Base URL of the API"
-)
+@click.option("--api-url", default=DEFAULT_API_URL, show_default=True, help="Base URL of the API")
 def timeframes(api_url):
     """List available timeframes from the API."""
     client = Client(api_url=api_url)
     tfs = client.fetch_timeframes()
-    click.echo(tfs)
+    if not tfs:
+        console.print("[yellow]No timeframes found.[/yellow]")
+    else:
+        table = Table(box=box.SIMPLE)
+        table.add_column("Timeframe", style="cyan")
+        for tf in tfs:
+            table.add_row(str(tf))
+        console.print(table)
 
 
 @main.command()
-@click.option(
-    "--api-url", default="http://candles.macrofinder.flolep.fr", show_default=True, help="Base URL of the API"
-)
+@click.option("--api-url", default=DEFAULT_API_URL, show_default=True, help="Base URL of the API")
 def tickers(api_url):
     """List available tickers from the API."""
     client = Client(api_url=api_url)
     tks = client.fetch_tickers()
-    click.echo(tks)
+    if not tks:
+        console.print("[yellow]No tickers found.[/yellow]")
+    else:
+        table = Table(box=box.SIMPLE)
+        table.add_column("Ticker", style="green")
+        for tk in tks:
+            table.add_row(str(tk))
+        console.print(table)
 
 
 if __name__ == "__main__":

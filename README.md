@@ -37,8 +37,8 @@ tickers = client.fetch_tickers()
 print(tickers)
 
 df = client.fetch_candles(
-    symbol=tickers[0],
-    timeframe=timeframes[0],
+    symbol='BINANCE:BTCUSDT',
+    timeframe='1',
     start=1700000000,
     end=1700003600,
     chunk_size=100,
@@ -53,19 +53,12 @@ See more in `examples/example_tvdata.py`.
 ```bash
 tvdata candles SYMBOL TIMEFRAME START END --csv output.csv
 # Example:
-tvdata candles "BINANCE:BTCUSDT" 1 1700000000 1700003600 --csv aapl_1m.csv
+tvdata candles "BINANCE:BTCUSDT" "1" 1700000000 1700003600 --csv aapl_1m.csv
 
 tvdata timeframes
 
 tvdata tickers
 ```
-
-## Development
-
-- Clone the repository
-- Install dependencies: `pip install -r requirements-dev.txt`
-- Run tests: `pytest`
-- Check typing: `mypy tvdata`
 
 ## License
 
@@ -107,14 +100,14 @@ print(timeframes)
 tickers = client.fetch_tickers()
 print(tickers)
 
-candles = client.fetch_candles(
-    symbol=tickers[0],
-    timeframe=timeframes[0],
+df = client.fetch_candles(
+    symbol='BINANCE:BTCUSDT',
+    timeframe='1',
     start=1700000000,
     end=1700003600,
     chunk_size=100,
 )
-print(candles)
+print(df)
 ```
 
 Voir plus dans `examples/example_tvdata.py`.
@@ -130,13 +123,6 @@ tvdata timeframes
 
 tvdata tickers
 ```
-
-## Développement
-
-- Clonez le dépôt
-- Installez les dépendances : `pip install -r requirements-dev.txt`
-- Lancez les tests : `pytest`
-- Vérifiez le typage : `mypy tvdata`
 
 ## Licence
 
