@@ -1,5 +1,7 @@
 # TvData
 
+[![PyPI](https://github.com/flolep2607/tvdata/actions/workflows/pypi.yaml/badge.svg)](https://github.com/flolep2607/tvdata/actions/workflows/pypi.yaml)
+
 [🇫🇷 Version française](#-version-française)
 
 A Python library and CLI for fetching and exporting financial candle data, timeframes, and tickers from your custom API.
