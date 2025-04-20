@@ -1,33 +1,8 @@
 repos:
   - repo: local
     hooks:
-      - id: default
-        name: default
-        entry: make default
-        language: system
-        pass_filenames: false
-      - id: pytest
-        name: pytest
-        entry: make pytest_check
-        language: system
-        pass_filenames: false
-      - id: ruff
-        name: ruff
-        entry: make ruff_check
-        language: system
-        pass_filenames: false
-      - id: black
-        name: black
-        entry: make black_check
-        language: system
-        pass_filenames: false
-      - id: mypy
-        name: mypy
-        entry: make mypy_check
-        language: system
-        pass_filenames: false
-      - id: tomlsort
-        name: tomlsort
-        entry: make tomlsort_check
+      - id: chores
+        name: chores
+        entry: make chores
         language: system
         pass_filenames: false
